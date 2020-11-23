@@ -1,0 +1,7 @@
+--- # vars/main.yml
+
+pod_yaml_file: "{{ pod_name }}.yaml"
+pod_yaml_path: "{{ pod_yaml_dir }}/{{ pod_yaml_file }}"
+
+guacamole_guacd_name: "{{ pod_name }}_guacd"
+guacamole_web_name: "{{ pod_name }}_web"

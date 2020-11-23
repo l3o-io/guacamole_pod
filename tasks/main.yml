@@ -1,0 +1,33 @@
+--- # tasks/main.yml
+
+- name: ensure pod configuration directory exists
+  file:
+    path: "{{ pod_yaml_dir }}"
+    state: directory
+  become: yes
+
+- name: create kubernetes pod configuration file
+  template:
+    src: guacamole.yml.j2
+    dest: "{{ pod_yaml_path }}"
+  become: yes
+
+- name: ensure host volume directories exist
+  file:
+    path: "{{ guacamole_volume_host_path }}"
+    state: directory
+  become: yes
+
+- name: import role podman_container_systemd to handle containers
+  vars:
+    ansible_become: yes
+    container_name: "{{ pod_name }}"
+    container_state: running
+    container_pod_yaml: "{{ pod_yaml_path }}"
+    container_image_list:
+      - "{{ guacamole_guacd_image }}"
+      - "{{ guacamole_web_image }}"
+    container_firewall_ports:
+      - "{{ guacamole_host_port }}/tcp"
+  include_role:
+    name: ikke_t.podman_container_systemd

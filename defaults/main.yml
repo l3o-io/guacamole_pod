@@ -1,0 +1,20 @@
+--- # defaults/main.yml
+
+pod_name: guacamole
+pod_label: guacamole
+
+pod_yaml_dir: /etc/containers/pods
+
+ldap_hostname: ldap.example.com
+ldap_port: 389
+
+ldap_config_base_dn: cn=guac,dc=example,dc=com
+ldap_user_base_dn: ou=People,dc=example,dc=com
+ldap_group_base_dn: ou=Groups,dc=example,dc=com
+
+guacamole_host_port: 8080
+
+guacamole_guacd_image: docker.io/guacamole/guacd:latest
+guacamole_web_image: docker.io/guacamole/guacamole:latest
+
+guacamole_volume_host_path: /tmp/guacamole

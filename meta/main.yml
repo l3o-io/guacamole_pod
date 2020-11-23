@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Christian Felder
+  description: Setups Apache Guacamole using podman
+  company: l3o.io
+  license: GPL-3.0-or-later
+  min_ansible_version: 2.9
+  platforms:
+    - name: EL
+      versions:
+      - 8
+  galaxy_tags:
+    - containers
+    - podman
+    - libpod
+    - apache
+    - guacamole
+    - remote
+    - vnc
+    - rdp
