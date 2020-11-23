@@ -18,3 +18,5 @@ guacamole_guacd_image: docker.io/guacamole/guacd:latest
 guacamole_web_image: docker.io/guacamole/guacamole:latest
 
 guacamole_volume_host_path: /tmp/guacamole
+
+guacamole_extensions: []

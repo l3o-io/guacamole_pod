@@ -13,6 +13,7 @@ Role Variables
 | ``ldap_config_base_dn``             | ``cn=guac,dc=example,dc=com``                       |
 | ``ldap_user_base_dn``               | ``ou=People,dc=example,dc=com``                     |
 | ``ldap_group_base_dn``              | ``ou=Groups,dc=example,dc=com``                     |
+| ``guacamole_extensions``            | ``[]`` (default), each entry is a path to either a extension jar file or directory |
 | ``guacamole_volume_host_path``      | ``/tmp/guacamole``                                  |
 | ``guacamole_host_port``             | ``8080`` (default)                                  |
 | ``guacamole_guacd_image``           |  ``docker.io/guacamole/guacd:latest`` (default)     |

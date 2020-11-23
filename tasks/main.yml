@@ -14,8 +14,24 @@
 
 - name: ensure host volume directories exist
   file:
-    path: "{{ guacamole_volume_host_path }}"
+    path: "{{ guacamole_volume_host_path }}/extensions"
     state: directory
+  become: yes
+
+- name: copy guacamole extensions
+  copy:
+    src: "{{ item }}"
+    dest: "{{ guacamole_volume_host_path }}/extensions/"
+  loop: "{{ guacamole_extensions }}"
+  become: yes
+
+- name: create extension jar file
+  community.general.archive:
+    path: "{{ guacamole_volume_host_path }}/extensions/{{ item | basename }}/*"
+    dest: "{{ guacamole_volume_host_path }}/extensions/{{ item | basename }}.jar"
+    format: zip
+  loop: "{{ guacamole_extensions }}"
+  when: not item.endswith('.jar')
   become: yes
 
 - name: import role podman_container_systemd to handle containers
