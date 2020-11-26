@@ -7,6 +7,7 @@ pod_yaml_dir: /etc/containers/pods
 
 ldap_hostname: ldap.example.com
 ldap_port: 389
+ldap_encryption_method: starttls
 
 ldap_config_base_dn: cn=guac,dc=example,dc=com
 ldap_user_base_dn: ou=People,dc=example,dc=com

@@ -10,6 +10,7 @@ Role Variables
 | ----------------------------------- | --------------------------------------------------- |
 | ``ldap_hostname``                   | ``ldap.example.com``                                |
 | ``ldap_port``                       | ``389``                                             |
+| ``ldap_encryption_method``          | ``starttls`` (default), ``ssl`` or ``none``         |
 | ``ldap_config_base_dn``             | ``cn=guac,dc=example,dc=com``                       |
 | ``ldap_user_base_dn``               | ``ou=People,dc=example,dc=com``                     |
 | ``ldap_group_base_dn``              | ``ou=Groups,dc=example,dc=com``                     |

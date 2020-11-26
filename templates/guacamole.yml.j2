@@ -100,7 +100,7 @@ spec:
         \thttps://www.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz.asc
         \thttps://archive.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz.asc"
     - name: LDAP_ENCRYPTION_METHOD
-      value: none
+      value: {{ ldap_encryption_method }}
     - name: LDAP_USER_BASE_DN
       value: {{ ldap_user_base_dn }}
     - name: LANG
