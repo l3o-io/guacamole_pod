@@ -41,9 +41,9 @@
   become: yes
 
 - name: copy gucamole properties file
-  copy:
-    src: files/guacamole.properties
-    dest: "{{ guacamole_volume_host_path }}/"
+  template:
+    src: guacamole.properties.j2
+    dest: "{{ guacamole_volume_host_path }}/guacamole.properties"
   become: yes
 
 - name: create extension jar file

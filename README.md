@@ -20,6 +20,7 @@ Role Variables
 | ``guacamole_pg_database``           | ``guac``                                            |
 | ``guacamole_pg_username``           | ``guac``                                            |
 | ``guacamole_pg_password``           | ``guac.secret``                                     |
+| ``guacamole_totp_issuer``           | l3o.io Apache Guacamole (default), optional when using guacamole-auth-totp plugin, the human-readable name of the entity issuing user accounts |
 | ``guacamole_extensions``            | ``[]`` (default), each entry is a path to either a extension jar file or directory |
 | ``guacamole_volume_host_path``      | ``/tmp/guacamole``                                  |
 | ``guacamole_host_port``             | ``8080`` (default)                                  |

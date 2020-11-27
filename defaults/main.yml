@@ -25,6 +25,10 @@ guacamole_pg_database: guac
 guacamole_pg_username: guac
 guacamole_pg_password: guac.secret
 
+# optional when using guacamole-auth-totp plugin
+# the human-readable name of the entity issuing user accounts
+guacamole_totp_issuer: l3o.io Apache Guacamole
+
 guacamole_guacd_image: docker.io/guacamole/guacd:latest
 guacamole_web_image: docker.io/guacamole/guacamole:latest
 guacamole_postgres_image: docker.io/centos/postgresql-{{ guacamole_postgres_version }}-centos8
