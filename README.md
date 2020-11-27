@@ -41,7 +41,6 @@ directory at ``ldap.example.com``:
             name: l3o.guacamole_pod
         vars:
           ldap_hostname: ldap.example.com
-          ldap_port: 636
           ldap_config_base_dn: cn=guac,dc=example,dc=com
           ldap_user_base_dn: ou=People,dc=example,dc=com
           ldap_group_base_dn: ou=Groups,dc=example,dc=com
