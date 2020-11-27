@@ -14,7 +14,36 @@ spec:
       path: {{ guacamole_volume_host_path }}
       type: Directory
     name: guacamole_homedir
+{% if guacamole_pg_hostname == "localhost" %}
+  - hostPath:
+      path: {{ guacamole_volume_host_db }}
+      type: Directory
+    name: guacamole_dbdir
   containers:
+  ##
+  # postgres container
+  #
+  - command:
+    - run-postgresql
+    env:
+    - name: POSTGRESQL_USER
+      value: {{ guacamole_pg_username }}
+    - name: POSTGRESQL_DATABASE
+      value: {{ guacamole_pg_database }}
+    - name: PGDATA
+      value: {{ guacamole_pg_data }}
+    - name: POSTGRESQL_PASSWORD
+      value: {{ guacamole_pg_password }}
+{% if guacamole_postgres_update %}
+    - name: POSTGRESQL_UPGRADE
+      value: copy
+{% endif %}
+    image: {{ guacamole_postgres_image }}
+    name: {{ guacamole_db_name }}
+    volumeMounts:
+    - mountPath: {{ guacamole_pg_data }}:z
+      name: guacamole_dbdir
+{% endif %}
   ##
   # guacamole guacd
   #
@@ -111,6 +140,16 @@ spec:
       value: {{ ldap_hostname }}
     - name: LDAP_PORT
       value: {{ ldap_port }}
+    - name: POSTGRES_HOSTNAME
+      value: {{ guacamole_pg_hostname }}
+    - name: POSTGRES_PORT
+      value: {{ guacamole_pg_port }}
+    - name: POSTGRES_DATABASE
+      value: {{ guacamole_pg_database }}
+    - name: POSTGRES_USER
+      value: {{ guacamole_pg_username }}
+    - name: POSTGRES_PASSWORD
+      value: {{ guacamole_pg_password }}
     - name: GUACAMOLE_HOME
       value: /guacamolehome
     - name: LD_LIBRARY_PATH
@@ -132,6 +171,8 @@ spec:
       - mountPath: /guacamolehome
         name: guacamole_homedir
         readOnly: true
+      - mountPath: {{ guacamole_pg_data }}:z
+        name: guacamole_dbdir
     workingDir: /opt/guacamole
 status: {}
 

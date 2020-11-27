@@ -12,23 +12,44 @@
     dest: "{{ pod_yaml_path }}"
   become: yes
 
-- name: ensure host volume directories exist
+- name: ensure host volume extensions directory exist
   file:
-    path: "{{ guacamole_volume_host_path }}/extensions"
+    path: "{{ guacamole_volume_host_ext }}"
     state: directory
+  become: yes
+
+- name: ensure host volume db directory exists
+  file:
+    path: "{{ guacamole_volume_host_db }}"
+    state: directory
+    mode: 0770
+    owner: "26"
+    group: "26"
+  become: yes
+
+- name: check whether initdb sql file already exists
+  stat:
+    path: "{{ guacamole_host_sqlfile }}"
+  register: initdb_stats
   become: yes
 
 - name: copy guacamole extensions
   copy:
     src: "{{ item }}"
-    dest: "{{ guacamole_volume_host_path }}/extensions/"
+    dest: "{{ guacamole_volume_host_ext }}/"
   loop: "{{ guacamole_extensions }}"
+  become: yes
+
+- name: copy gucamole properties file
+  copy:
+    src: files/guacamole.properties
+    dest: "{{ guacamole_volume_host_path }}/"
   become: yes
 
 - name: create extension jar file
   community.general.archive:
-    path: "{{ guacamole_volume_host_path }}/extensions/{{ item | basename }}/*"
-    dest: "{{ guacamole_volume_host_path }}/extensions/{{ item | basename }}.jar"
+    path: "{{ guacamole_volume_host_ext }}/{{ item | basename }}/*"
+    dest: "{{ guacamole_volume_host_ext }}/{{ item | basename }}.jar"
     format: zip
   loop: "{{ guacamole_extensions }}"
   when: not item.endswith('.jar')
@@ -40,10 +61,35 @@
     container_name: "{{ pod_name }}"
     container_state: running
     container_pod_yaml: "{{ pod_yaml_path }}"
-    container_image_list:
-      - "{{ guacamole_guacd_image }}"
-      - "{{ guacamole_web_image }}"
+    container_image_list: "{{ guacamole_container_image_list }}"
     container_firewall_ports:
       - "{{ guacamole_host_port }}/tcp"
   include_role:
     name: ikke_t.podman_container_systemd
+
+- block:
+    - name: create initdb sql file
+      command:
+        cmd: >-
+          podman run --rm "{{ guacamole_web_image }}"
+          /opt/guacamole/bin/initdb.sh
+          --postgres
+      register: initdb_result
+    - name: write file
+      copy:
+        content: "{{ initdb_result.stdout }} "
+        dest: "{{ guacamole_host_sqlfile }}"
+      register: sqlfile
+    - name: import initdb sql file
+      command:
+        cmd: >-
+          podman exec
+          -e PGSPASSWORD="{{ guacamole_pg_password }}"
+          "{{ guacamole_db_name }}"
+          psql
+          -U "{{ guacamole_pg_username }}"
+          -f "{{ guacamole_pg_sqlfile }}"
+          "{{ guacamole_pg_database }}"
+      when: sqlfile.changed
+  become: yes
+  when: not initdb_stats.stat.exists and container_state is not defined

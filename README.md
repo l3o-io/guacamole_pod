@@ -14,11 +14,18 @@ Role Variables
 | ``ldap_config_base_dn``             | ``cn=guac,dc=example,dc=com``                       |
 | ``ldap_user_base_dn``               | ``ou=People,dc=example,dc=com``                     |
 | ``ldap_group_base_dn``              | ``ou=Groups,dc=example,dc=com``                     |
+| ``guacamole_postgres_version``      | ``12``                                              |
+| ``guacamole_pg_hostname``           | ``localhost`` (default for using internal postgres container) |
+| ``guacamole_pg_port``               | ``5432`` (default)                                  |
+| ``guacamole_pg_database``           | ``guac``                                            |
+| ``guacamole_pg_username``           | ``guac``                                            |
+| ``guacamole_pg_password``           | ``guac.secret``                                     |
 | ``guacamole_extensions``            | ``[]`` (default), each entry is a path to either a extension jar file or directory |
 | ``guacamole_volume_host_path``      | ``/tmp/guacamole``                                  |
 | ``guacamole_host_port``             | ``8080`` (default)                                  |
 | ``guacamole_guacd_image``           |  ``docker.io/guacamole/guacd:latest`` (default)     |
 | ``guacamole_web_image``             |  ``docker.io/guacamole/guacamole:latest`` (default) |
+| ``guacamole_postgres_image``        |  ``docker.io/centos/postgresql-{{ guacamole_postgres_version }}-centos8`` |
 | ``pod_yaml_dir``                    | ``/etc/containers/pods`` (default)                  |
 | ``pod_name``                        | ``guacamole`` (default)                             |
 | ``pod_label``                       | ``guacamole`` (default)                             |
