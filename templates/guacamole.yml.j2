@@ -14,12 +14,14 @@ spec:
       path: {{ guacamole_volume_host_path }}
       type: Directory
     name: guacamole_homedir
-{% if guacamole_pg_hostname == "localhost" %}
+{% if guacamole_pg_hostname == "localhost" and guacamole_use_db | bool %}
   - hostPath:
       path: {{ guacamole_volume_host_db }}
       type: Directory
     name: guacamole_dbdir
+{% endif %}
   containers:
+{% if guacamole_pg_hostname == "localhost" and guacamole_use_db | bool %}
   ##
   # postgres container
   #
@@ -39,7 +41,7 @@ spec:
       value: copy
 {% endif %}
     image: {{ guacamole_postgres_image }}
-    name: {{ guacamole_db_name }}
+    name: db
     volumeMounts:
     - mountPath: {{ guacamole_pg_data }}:z
       name: guacamole_dbdir
@@ -67,7 +69,7 @@ spec:
     - name: GUACD_LOG_LEVEL
       value: info
     image: {{ guacamole_guacd_image }}
-    name: {{ guacamole_guacd_name }}
+    name: guacd
     ports:
     - containerPort: 8080
       hostPort: {{ guacamole_host_port }}
@@ -111,10 +113,12 @@ spec:
         A27677289986DB50844682F8ACB77FC2E86E29AC A9C5DF4D22E99998D9875A5110C01C5A2F6059E7
         DCFD35E0BF8CA7344752DE8B6FB21E8933C60243 F3A04C595DB5B6A5F1ECA43E3B7BBB100D811BBE
         F7DA48BB64BCB84ECBA7EE6935CD23C10D498E23
+{% if guacamole_use_ldap | bool %}
     - name: LDAP_GROUP_BASE_DN
       value: {{ ldap_group_base_dn }}
     - name: LDAP_CONFIG_BASE_DN
       value: {{ ldap_config_base_dn }}
+{% endif %}
     - name: JAVA_HOME
       value: /docker-java-home/jre
     - name: JAVA_VERSION
@@ -128,18 +132,23 @@ spec:
         \thttps://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz.asc
         \thttps://www.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz.asc
         \thttps://archive.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz.asc"
+{% if guacamole_use_ldap | bool %}
     - name: LDAP_ENCRYPTION_METHOD
       value: {{ ldap_encryption_method }}
     - name: LDAP_USER_BASE_DN
       value: {{ ldap_user_base_dn }}
+{% endif %}
     - name: LANG
       value: C.UTF-8
     - name: GUACD_HOSTNAME
       value: localhost
+{% if guacamole_use_ldap | bool %}
     - name: LDAP_HOSTNAME
       value: {{ ldap_hostname }}
     - name: LDAP_PORT
       value: {{ ldap_port }}
+{% endif %}
+{% if guacamole_use_db | bool %}
     - name: POSTGRES_HOSTNAME
       value: {{ guacamole_pg_hostname }}
     - name: POSTGRES_PORT
@@ -150,6 +159,7 @@ spec:
       value: {{ guacamole_pg_username }}
     - name: POSTGRES_PASSWORD
       value: {{ guacamole_pg_password }}
+{% endif %}
     - name: GUACAMOLE_HOME
       value: /guacamolehome
     - name: LD_LIBRARY_PATH
@@ -160,7 +170,7 @@ spec:
         \thttps://www.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz
         \thttps://archive.apache.org/dist/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz"
     image: {{ guacamole_web_image }}
-    name: {{ guacamole_web_name }}
+    name: web
     resources: {}
     securityContext:
       allowPrivilegeEscalation: true
@@ -171,8 +181,10 @@ spec:
       - mountPath: /guacamolehome
         name: guacamole_homedir
         readOnly: true
+{% if guacamole_pg_hostname == "localhost" and guacamole_use_db | bool %}
       - mountPath: {{ guacamole_pg_data }}:z
         name: guacamole_dbdir
+{% endif %}
     workingDir: /opt/guacamole
 status: {}
 

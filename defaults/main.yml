@@ -5,6 +5,9 @@ pod_label: guacamole
 
 pod_yaml_dir: /etc/containers/pods
 
+guacamole_use_ldap: no
+guacamole_use_db: yes
+
 ldap_hostname: ldap.example.com
 ldap_port: 389
 ldap_encryption_method: starttls

@@ -44,6 +44,7 @@
   template:
     src: guacamole.properties.j2
     dest: "{{ guacamole_volume_host_path }}/guacamole.properties"
+  when: guacamole_use_db | bool
   become: yes
 
 - name: create extension jar file
@@ -75,11 +76,13 @@
           /opt/guacamole/bin/initdb.sh
           --postgres
       register: initdb_result
+      when: guacamole_use_db | bool
     - name: write file
       copy:
         content: "{{ initdb_result.stdout }} "
         dest: "{{ guacamole_host_sqlfile }}"
       register: sqlfile
+      when: guacamole_use_db | bool
     - name: import initdb sql file
       command:
         cmd: >-

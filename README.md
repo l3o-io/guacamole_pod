@@ -8,6 +8,8 @@ Role Variables
 
 | Variable                            | Value                                               |
 | ----------------------------------- | --------------------------------------------------- |
+| ``guacamole_use_ldap``              | ``yes`` or ``no`` (default)                         |
+| ``guacamole_use_db``                | ``yes`` (default, necessary for totp) or ``no``     |
 | ``ldap_hostname``                   | ``ldap.example.com``                                |
 | ``ldap_port``                       | ``389``                                             |
 | ``ldap_encryption_method``          | ``starttls`` (default), ``ssl`` or ``none``         |
