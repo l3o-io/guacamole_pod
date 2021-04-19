@@ -3,5 +3,21 @@
 pod_yaml_file: "{{ pod_name }}.yaml"
 pod_yaml_path: "{{ pod_yaml_dir }}/{{ pod_yaml_file }}"
 
-guacamole_guacd_name: "{{ pod_name }}_guacd"
-guacamole_web_name: "{{ pod_name }}_web"
+guacamole_guacd_name: "{{ pod_name }}-guacd"
+guacamole_web_name: "{{ pod_name }}-web"
+guacamole_db_name: "{{ pod_name }}-db"
+
+guacamole_volume_host_db: "{{ guacamole_volume_host_path }}/db"
+guacamole_volume_host_ext: "{{ guacamole_volume_host_path }}/extensions"
+
+guacamole_pg_data: /var/lib/pgsql/data
+
+guacamole_sqlfile: initdb.sql
+guacamole_host_sqlfile: "{{ guacamole_volume_host_db }}/{{ guacamole_sqlfile }}"
+guacamole_pg_sqlfile: "{{ guacamole_pg_data }}/{{ guacamole_sqlfile }}"
+
+guacamole_container_image_list_mandatory:
+  - "{{ guacamole_guacd_image }}"
+  - "{{ guacamole_web_image }}"
+
+guacamole_container_image_list: "{{ guacamole_container_image_list_mandatory | union([guacamole_postgres_image]) if guacamole_pg_hostname == 'localhost' and guacamole_use_db | bool else guacamole_container_image_list_mandatory }}"
