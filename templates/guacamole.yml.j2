@@ -40,8 +40,23 @@ spec:
     - name: POSTGRESQL_UPGRADE
       value: copy
 {% endif %}
+    - name: APP_DATA
+      value: /opt/app-root
+    - name: APP_ROOT
+      value: /opt/app-root
+    - name: CONTAINER_SCRIPTS_PATH
+      value: /usr/share/container-scripts/postgresql
     image: {{ guacamole_postgres_image }}
     name: db
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities: {}
+      privileged: false
+      readOnlyRootFilesystem: false
+      runAsGroup: 26
+      runAsUser: 26
+      seLinuxOptions: {}
     volumeMounts:
     - mountPath: {{ guacamole_pg_data }}:z
       name: guacamole_dbdir
