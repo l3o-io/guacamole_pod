@@ -59,6 +59,8 @@
 - name: import role podman_container_systemd to handle containers
   vars:
     ansible_become: yes
+    service_files_dir: /etc/systemd/system
+    systemd_tempdir: "%t"
     container_name: "{{ pod_name }}"
     container_state: running
     container_pod_yaml: "{{ pod_yaml_path }}"
