@@ -69,18 +69,6 @@ spec:
     - -c
     - /usr/local/guacamole/sbin/guacd -b 0.0.0.0 -L $GUACD_LOG_LEVEL -f
     env:
-    - name: PATH
-      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    - name: TERM
-      value: xterm
-    - name: HOSTNAME
-      value: guacamole
-    - name: container
-      value: podman
-    - name: LC_ALL
-      value: C.UTF-8
-    - name: LD_LIBRARY_PATH
-      value: /usr/local/guacamole/lib
     - name: GUACD_LOG_LEVEL
       value: info
     image: {{ guacamole_guacd_image }}
