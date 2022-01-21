@@ -7,8 +7,9 @@ guacamole_guacd_name: "{{ pod_name }}-guacd"
 guacamole_web_name: "{{ pod_name }}-web"
 guacamole_db_name: "{{ pod_name }}-db"
 
+guacamole_volume_host_home: "{{ guacamole_volume_host_path }}/home"
 guacamole_volume_host_db: "{{ guacamole_volume_host_path }}/db"
-guacamole_volume_host_ext: "{{ guacamole_volume_host_path }}/extensions"
+guacamole_volume_host_ext: "{{ guacamole_volume_host_home }}/extensions"
 
 guacamole_pg_data: /var/lib/pgsql/data
 

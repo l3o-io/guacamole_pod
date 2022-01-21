@@ -11,7 +11,7 @@ spec:
   # define exported volumes for permanent data
   #
   - hostPath:
-      path: {{ guacamole_volume_host_path }}
+      path: {{ guacamole_volume_host_home }}
       type: Directory
     name: guacamole_homedir
 {% if guacamole_pg_hostname == "localhost" and guacamole_use_db | bool %}

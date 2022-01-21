@@ -12,6 +12,12 @@
     dest: "{{ pod_yaml_path }}"
   become: yes
 
+- name: ensure host volume home directory exist
+  file:
+    path: "{{ guacamole_volume_host_home }}"
+    state: directory
+  become: yes
+
 - name: ensure host volume extensions directory exist
   file:
     path: "{{ guacamole_volume_host_ext }}"
@@ -43,7 +49,7 @@
 - name: copy gucamole properties file
   template:
     src: guacamole.properties.j2
-    dest: "{{ guacamole_volume_host_path }}/guacamole.properties"
+    dest: "{{ guacamole_volume_host_home }}/guacamole.properties"
   when: guacamole_use_db | bool
   become: yes
 
