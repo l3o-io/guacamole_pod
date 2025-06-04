@@ -32,8 +32,8 @@ guacamole_pg_password: guac.secret
 # the human-readable name of the entity issuing user accounts
 guacamole_totp_issuer: l3o.io Apache Guacamole
 
-guacamole_guacd_image: docker.io/guacamole/guacd:latest
-guacamole_web_image: docker.io/guacamole/guacamole:latest
+guacamole_guacd_image: docker.io/guacamole/guacd:1.5.5
+guacamole_web_image: docker.io/guacamole/guacamole:1.5.5
 guacamole_postgres_image: docker.io/centos/postgresql-{{ guacamole_postgres_version }}-centos8
 
 guacamole_volume_host_path: /tmp/guacamole

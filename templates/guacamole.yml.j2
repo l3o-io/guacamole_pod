@@ -64,11 +64,7 @@ spec:
   ##
   # guacamole guacd
   #
-  - command:
-    - /bin/sh
-    - -c
-    - /usr/local/guacamole/sbin/guacd -b 0.0.0.0 -L $GUACD_LOG_LEVEL -f
-    env:
+  - env:
     - name: GUACD_LOG_LEVEL
       value: info
     image: {{ guacamole_guacd_image }}

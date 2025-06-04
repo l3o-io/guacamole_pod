@@ -82,7 +82,7 @@
         cmd: >-
           podman run --rm "{{ guacamole_web_image }}"
           /opt/guacamole/bin/initdb.sh
-          --postgres
+          --postgresql
       register: initdb_result
       when: guacamole_use_db | bool
     - name: write file
